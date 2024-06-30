@@ -14,12 +14,10 @@ namespace MagicVilla_VillaAPI.Controllers
     [ApiController]
     public class VillaAPIController : ControllerBase
     {
-        //private readonly ILogging _logger;
         private readonly ApplicationDbContext _db;
         public VillaAPIController(ApplicationDbContext db)
         {
             _db = db;
-            //_logger = logger;
         }
 
         // Http verbs helps swagger to create the proper documentation. If there is no httpverb swagger page will give an error
@@ -27,7 +25,6 @@ namespace MagicVilla_VillaAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<VillaDTO>> GetVillas()
         {
-            //_logger.Log("Getting all Villas", "");
             return Ok(_db.Villas.ToList());
         }
 
@@ -45,7 +42,6 @@ namespace MagicVilla_VillaAPI.Controllers
         {
             if (id == 0)
             {
-                //_logger.Log("Get Villa Error with Id: " + id, "error");
                 return BadRequest();
             }
 
@@ -79,11 +75,13 @@ namespace MagicVilla_VillaAPI.Controllers
             {
                 return BadRequest(villaDTO);
             }
+            
             if (villaDTO.Id > 0)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
-            //villaDTO.Id = _db.Villas.OrderByDescending(u => u.Id).FirstOrDefault().Id + 1;
+
+            // Convert Dto to model, so that we can add to the table
             Villa model = new()
             {
                 Amenity = villaDTO.Amenity,
@@ -96,10 +94,12 @@ namespace MagicVilla_VillaAPI.Controllers
                 Sqft = villaDTO.Sqft
             };
             _db.Villas.Add(model);
+
+            // We can make all the changes, then call save changes. At this point database call is there
             _db.SaveChanges();
+            
             // When the resource is created, give the url where resource is created
             return CreatedAtRoute("GetVilla", new { id = villaDTO.Id }, villaDTO);
-            //return Ok(villaDTO);
         }
 
 
@@ -119,8 +119,9 @@ namespace MagicVilla_VillaAPI.Controllers
                 return NotFound();
             }
             _db.Villas.Remove(villa);
-            // It means no content is returned in the response.
             _db.SaveChanges();
+            
+            // It means no content is returned in the response.
             return NoContent();
         }
 
@@ -133,14 +134,18 @@ namespace MagicVilla_VillaAPI.Controllers
             {
                 return BadRequest();
             }
+
+            // This code was required when we were using static data source
             //var villa = _db.Villas.FirstOrDefault(u => u.Id == id);
-            ////if(villa == null)
-            ////{
-            ////    return NotFound();
-            ////}
+            //if(villa == null)
+            //{
+            //    return NotFound();
+            //}
             //villa.Name = villaDTO.Name;
             //villa.Sqft = villaDTO.Sqft;
             //villa.Occupancy = villaDTO.Occupancy;
+
+            // Convert dto to model, so that we can update inside table
             Villa model = new()
             {
                 Amenity = villaDTO.Amenity,
@@ -172,6 +177,7 @@ namespace MagicVilla_VillaAPI.Controllers
                 return BadRequest();
             }
 
+            // Convert model to dto, so that we can apply incoming dto to the new dto
             VillaDTO villaDTO = new()
             {
                 Amenity = villa.Amenity,
@@ -184,10 +190,13 @@ namespace MagicVilla_VillaAPI.Controllers
                 Sqft = villa.Sqft
             };
             patchDTO.ApplyTo(villaDTO, ModelState);
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
+            // Convert dto to model, so that we can update in the table
             Villa model = new()
             {
                 Amenity = villaDTO.Amenity,
