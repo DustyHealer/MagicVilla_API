@@ -27,7 +27,7 @@ namespace MagicVilla_VillaAPI.Controllers
         public async Task<ActionResult<IEnumerable<VillaDTO>>> GetVillas()
         {
             IEnumerable<Villa> villaList = await _db.Villas.ToListAsync();
-            return Ok(_mapper.Map<VillaDTO>(villaList));
+            return Ok(_mapper.Map<IEnumerable<VillaDTO>>(villaList));
         }
 
         // Produces Response Type is used to document response types with the swagger

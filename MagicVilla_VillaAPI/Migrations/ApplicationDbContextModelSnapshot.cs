@@ -63,7 +63,7 @@ namespace MagicVilla_VillaAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Villas");
+                    b.ToTable("Villas", (string)null);
 
                     b.HasData(
                         new
