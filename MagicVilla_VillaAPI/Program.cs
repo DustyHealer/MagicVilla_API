@@ -1,4 +1,5 @@
 
+using MagicVilla_VillaAPI;
 using MagicVilla_VillaAPI.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"));
 });
+
+// Register automapper
+builder.Services.AddAutoMapper(typeof(MappingConfig));
 
 // Log using serilog - Confifuration for serilog
 //Log.Logger = new LoggerConfiguration().MinimumLevel.Debug()
