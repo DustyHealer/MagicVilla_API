@@ -33,7 +33,7 @@ namespace MagicVilla_VillaAPI.Controllers
         {
             try
             {
-                IEnumerable<VillaNumber> villaNumbers = await _dbVillaNumber.GetAllAsync();
+                IEnumerable<VillaNumber> villaNumbers = await _dbVillaNumber.GetAllAsync(includeProperties: "Villa");
                 _response.StatusCode = HttpStatusCode.OK;
                 _response.Result = _mapper.Map<IEnumerable<VillaNumberDTO>>(villaNumbers);
                 return Ok(_response);
@@ -63,7 +63,7 @@ namespace MagicVilla_VillaAPI.Controllers
                     _response.ErrorMessages = new List<string> { "Id is invalid" };
                     return BadRequest(_response);
                 }
-                VillaNumber villaNumber = await _dbVillaNumber.GetAsync(n => n.VillaNo == id);
+                VillaNumber villaNumber = await _dbVillaNumber.GetAsync(n => n.VillaNo == id, includeProperties: "Villa");
                 if (villaNumber == null)
                 {
                     _response.StatusCode = HttpStatusCode.NotFound;
@@ -232,7 +232,7 @@ namespace MagicVilla_VillaAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse>> UpdatePartialVillaNumber(int id, JsonPatchDocument<VillaNumberUpdateDTO> patchDTO) 
+        public async Task<ActionResult<ApiResponse>> UpdatePartialVillaNumber(int id, JsonPatchDocument<VillaNumberUpdateDTO> patchDTO)
         {
             try
             {
