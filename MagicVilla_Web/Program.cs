@@ -1,6 +1,7 @@
 using MagicVilla_Web;
 using MagicVilla_Web.Services;
 using MagicVilla_Web.Services.IServices;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,17 @@ builder.Services.AddScoped<IVillaNumberService, VillaNumberService>();
 
 // Add distributed memory cache for storing session details
 builder.Services.AddDistributedMemoryCache();
+
+// Add authentication scheme for session and authorize attribute to work
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options => 
+    {
+        options.Cookie.HttpOnly = true;
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+        options.LoginPath = "/Auth/Login"; // If we dont set this, default is Account/Login
+        options.AccessDeniedPath = "/Auth/AccessDenied"; // If we dont set this, default is Account/AccessDenied
+        options.SlidingExpiration = true;
+    });
 
 // Add actual session
 builder.Services.AddSession(options => 
@@ -48,6 +60,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
