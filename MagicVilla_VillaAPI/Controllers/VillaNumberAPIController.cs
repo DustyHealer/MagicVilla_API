@@ -10,8 +10,10 @@ using System.Net;
 
 namespace MagicVilla_VillaAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     public class VillaNumberAPIController : ControllerBase
     {
         private readonly IVillaNumberRepository _dbVillaNumber;
@@ -27,6 +29,7 @@ namespace MagicVilla_VillaAPI.Controllers
             _response = new ApiResponse();
         }
 
+        [MapToApiVersion("1.0")]
         [HttpGet(Name = "GetVillaNumbers")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -46,6 +49,13 @@ namespace MagicVilla_VillaAPI.Controllers
                 _response.ErrorMessages = new List<string> { ex.Message };
             }
             return _response;
+        }
+
+        [MapToApiVersion("2.0")]
+        [HttpGet]
+        public IEnumerable<string> Get() 
+        {
+            return new string[] { "value1", "value2" };
         }
 
         [HttpGet("{id:int}", Name = "GetVillaNumber")]

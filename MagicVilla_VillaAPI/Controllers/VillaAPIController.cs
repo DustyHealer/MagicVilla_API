@@ -12,8 +12,9 @@ using System.Net;
 namespace MagicVilla_VillaAPI.Controllers
 {
     // [Route("api/[controller]")] can also be used but incase the controller filename changed later on, then it is a problem
-    [Route("api/VillaAPI")]
+    [Route("api/v{version:apiVersion}/VillaAPI")]
     [ApiController]
+    [ApiVersion("1.0")]
     public class VillaAPIController : ControllerBase
     {
         protected ApiResponse _response;
