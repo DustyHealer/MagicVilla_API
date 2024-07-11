@@ -9,7 +9,7 @@ namespace MagicVilla_VillaAPI.Controllers
 {
     [Route("api/v{version:apiVersion}/UsersAuth")]
     [ApiController]
-    [ApiVersion("1.0")]
+    [ApiVersionNeutral] // This API is not dependent on the api versions
     public class UsersController : ControllerBase
     {
         private readonly IUserRepository _userRepo;
@@ -41,7 +41,7 @@ namespace MagicVilla_VillaAPI.Controllers
         public async Task<IActionResult> Register([FromBody] RegistrationRequestDTO model)
         {
             bool ifUserNameUnique = _userRepo.IsUniqueUser(model.UserName);
-            if (!ifUserNameUnique) 
+            if (!ifUserNameUnique)
             {
                 _response.StatusCode = HttpStatusCode.BadRequest;
                 _response.IsSuccess = false;

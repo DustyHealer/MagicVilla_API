@@ -8,12 +8,12 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace MagicVilla_VillaAPI.Controllers
+namespace MagicVilla_VillaAPI.Controllers.v1
 {
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    //[ApiVersion("1.0", Deprecated = true)] // Show that this version of this controller api endspoints as deprecated inside response headers
     [ApiVersion("1.0")]
-    [ApiVersion("2.0")]
     public class VillaNumberAPIController : ControllerBase
     {
         private readonly IVillaNumberRepository _dbVillaNumber;
@@ -29,7 +29,7 @@ namespace MagicVilla_VillaAPI.Controllers
             _response = new ApiResponse();
         }
 
-        [MapToApiVersion("1.0")]
+        //[MapToApiVersion("1.0")]
         [HttpGet(Name = "GetVillaNumbers")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -51,11 +51,10 @@ namespace MagicVilla_VillaAPI.Controllers
             return _response;
         }
 
-        [MapToApiVersion("2.0")]
-        [HttpGet]
-        public IEnumerable<string> Get() 
+        [HttpGet("GetString")]
+        public IEnumerable<string> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new string[] { "string1", "string2" };
         }
 
         [HttpGet("{id:int}", Name = "GetVillaNumber")]

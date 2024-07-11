@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 
-namespace MagicVilla_VillaAPI.Controllers
+namespace MagicVilla_VillaAPI.Controllers.v1
 {
     // [Route("api/[controller]")] can also be used but incase the controller filename changed later on, then it is a problem
     [Route("api/v{version:apiVersion}/VillaAPI")]
@@ -24,7 +24,7 @@ namespace MagicVilla_VillaAPI.Controllers
         {
             _dbVilla = dbVilla;
             _mapper = mapper;
-            this._response = new ApiResponse();
+            _response = new ApiResponse();
         }
 
         // Http verbs helps swagger to create the proper documentation. If there is no httpverb swagger page will give an error
