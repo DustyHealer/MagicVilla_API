@@ -3,7 +3,9 @@
     public class LoginResponseDTO
     {
         public UserDto User { get; set; }
-        public string Role { get; set; }
+
+        // We dont below need as token contains a claim of role
+        // public string Role { get; set; }
         public string Token { get; set; }
     }
 }
