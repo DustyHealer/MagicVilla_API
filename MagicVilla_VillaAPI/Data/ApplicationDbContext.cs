@@ -1,21 +1,24 @@
 ﻿using MagicVilla_VillaAPI.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace MagicVilla_VillaAPI.Data
 {
-    public class ApplicationDbContext : DbContext
+    // Identity DbContext for using the identity properties
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
 
         }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<LocalUser> LocalUsers { get; set; }
         public DbSet<Villa> Villas { get; set; }
         public DbSet<VillaNumber> VillaNumbers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder); // This method will map key mappings with the base class
             modelBuilder.Entity<Villa>().HasData(
                 new Villa
                 {

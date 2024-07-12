@@ -1,8 +1,10 @@
 using MagicVilla_VillaAPI;
 using MagicVilla_VillaAPI.Data;
+using MagicVilla_VillaAPI.Models;
 using MagicVilla_VillaAPI.Repository;
 using MagicVilla_VillaAPI.Repository.IRepository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -17,6 +19,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"));
 });
+
+// Add Identity Service // Add Microsoft.AspNetCore.Identity.EntityFrame package for the addentityframerworkstores method
+builder.Services.AddIdentity<ApplicationUser,IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
 // Add Caching for the web api
 builder.Services.AddResponseCaching();
