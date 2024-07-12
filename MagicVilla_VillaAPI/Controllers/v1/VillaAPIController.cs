@@ -29,6 +29,8 @@ namespace MagicVilla_VillaAPI.Controllers.v1
 
         // Http verbs helps swagger to create the proper documentation. If there is no httpverb swagger page will give an error
         [HttpGet]
+        // [ResponseCache(Duration = 30)] // Hard coded duration
+        [ResponseCache(CacheProfileName = "Default30")] // Apply the cache profile
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -62,6 +64,7 @@ namespace MagicVilla_VillaAPI.Controllers.v1
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        // [ResponseCache(Location =ResponseCacheLocation.None, NoStore =true)] // Result is not cached, mostly used in error pages
         public async Task<ActionResult<ApiResponse>> GetVilla(int id)
         {
             try

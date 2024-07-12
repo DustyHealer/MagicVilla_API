@@ -1,4 +1,3 @@
-
 using MagicVilla_VillaAPI;
 using MagicVilla_VillaAPI.Data;
 using MagicVilla_VillaAPI.Repository;
@@ -18,6 +17,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"));
 });
+
+// Add Caching for the web api
+builder.Services.AddResponseCaching();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IVillaRepository, VillaRepository>();
@@ -68,6 +70,12 @@ builder.Services.AddAuthentication(x =>
 // Json support so that we can patch the json
 builder.Services.AddControllers(option =>
 {
+    // Add a cache profile so that it can be applied universally
+    option.CacheProfiles.Add("Default30", 
+        new CacheProfile() 
+        {
+            Duration = 30
+        });
     //option.ReturnHttpNotAcceptable = true;
 }).AddNewtonsoftJson().AddXmlDataContractSerializerFormatters();
 

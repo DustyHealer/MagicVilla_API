@@ -21,7 +21,7 @@ namespace MagicVilla_Web.Services
                 ApiType = SD.ApiType.POST,
                 Token = token,
                 Data = dto,
-                Url = villaUrl + "/api/villaNumberAPI"
+                Url = villaUrl + "/api/v1/villaNumberAPI"
             });
         }
 
@@ -31,7 +31,7 @@ namespace MagicVilla_Web.Services
             {
                 ApiType = SD.ApiType.DELETE,
                 Token = token,
-                Url = villaUrl + "/api/villaNumberAPI/" + id
+                Url = villaUrl + "/api/v1/villaNumberAPI/" + id
             });
         }
 
@@ -41,7 +41,7 @@ namespace MagicVilla_Web.Services
             {
                 ApiType = SD.ApiType.GET,
                 Token = token,
-                Url = villaUrl + "/api/villaNumberAPI"
+                Url = villaUrl + "/api/v1/villaNumberAPI"
             });
         }
 
@@ -51,7 +51,7 @@ namespace MagicVilla_Web.Services
             {
                 ApiType = SD.ApiType.GET,
                 Token = token,
-                Url = villaUrl + "/api/villaNumberAPI/" + id
+                Url = villaUrl + "/api/v1/villaNumberAPI/" + id
             });
         }
 
@@ -62,7 +62,7 @@ namespace MagicVilla_Web.Services
                 ApiType = SD.ApiType.PUT,
                 Token = token,
                 Data = dto,
-                Url = villaUrl + "/api/villaNumberAPI/" + dto.VillaNo      // If you want, you can remove the id from the update request and use only the body
+                Url = villaUrl + "/api/v1/villaNumberAPI/" + dto.VillaNo      // If you want, you can remove the id from the update request and use only the body
             });
         }
     }
